@@ -75,7 +75,7 @@ header.nav .lang:hover { border-color: var(--cyan); }
   background: linear-gradient(90deg, rgba(6,10,24,.85) 0%, rgba(6,10,24,.35) 55%, rgba(6,10,24,0) 100%);
 }
 .hero-inner { position: relative; z-index: 1; padding: 88px 16px 96px; }
-.page-hero .hero-inner { padding: 56px 16px; }
+.page-hero .hero-inner { padding: 72px 16px; }
 .page-hero h1 { margin: 0; font-size: 34px; }
 .page-hero p { margin: 8px 0 0; color: var(--hero-muted); max-width: 560px; }
 

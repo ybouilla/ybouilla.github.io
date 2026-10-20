@@ -66,6 +66,8 @@
   }
 
   function region(w, h) {
+    // Short banners (Projects, Background pages) use almost their full height
+    if (w >= 760 && h < 360) return { x: w * 0.56, y: h * 0.07, w: w * 0.38, h: h * 0.86, alpha: 1 };
     if (w >= 760) return { x: w * 0.56, y: h * 0.16, w: w * 0.38, h: h * 0.68, alpha: 1 };
     return { x: 16, y: h * 0.64, w: w - 32, h: h * 0.28, alpha: 0.35 };
   }
@@ -261,10 +263,10 @@
           ctx.fillStyle = `rgba(${n.c},${0.5 + 0.5 * glow})`;
           ctx.beginPath(); ctx.arc(n.x, n.y, n.r + glow, 0, 6.28); ctx.fill();
         }
-        if (h >= 360) {
+        if (w >= 760 || h >= 360) {
           showcase(ctx, w, h, t);
         } else {
-          // Short banners on secondary pages: plain ECG trace
+          // Short banners on small screens: plain ECG trace, to keep the title readable
           ctx.lineWidth = 2;
           ctx.shadowColor = `rgba(${TEAL},0.9)`; ctx.shadowBlur = 10;
           trace(ctx, w, h * 0.82, Math.min(70, h * 0.12), ecg, 280, t * 110, `rgba(${TEAL},0.75)`, 0, w);
