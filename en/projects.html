@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects · Yannick Bouillard</title>
+  <meta name="description" content="Projects by Yannick Bouillard: federated learning, data engineering, medical imaging, signal processing and web applications.">
+  <link rel="alternate" hreflang="fr" href="../projects.html">
+  <script>document.documentElement.classList.add("js")</script>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">Yannick <span>Bouillard</span></a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="resume.html">Resume</a>
+        <a class="lang" href="../projects.html" hreflang="fr" lang="fr" title="Version française">FR</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <canvas class="hero-bg" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+      <h1>Projects</h1>
+      <p>A selection of professional and personal projects. Source code is available on GitHub.</p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="fl" aria-pressed="false">Federated Learning</button>
+      <button type="button" data-filter="data" aria-pressed="false">Data engineering</button>
+      <button type="button" data-filter="sante" aria-pressed="false">Health &amp; signal</button>
+      <button type="button" data-filter="web" aria-pressed="false">Web</button>
+    </div>
+
+    <div class="grid" id="projects">
+      <article class="card reveal" data-cat="fl">
+        <img class="thumb logo" src="../assets/img/fedbiomed.png" alt="Fed-BioMed logo" loading="lazy">
+        <span class="domain">Federated Learning</span>
+        <h3>Fed-BioMed</h3>
+        <p>Open-source federated learning platform for healthcare, deployed across hospital networks in France and Germany. Back-end, APIs, PACS pipelines, MLOps.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">gRPC</span><span class="tag">React</span><span class="tag">Docker</span></div>
+        <div class="links"><a href="https://github.com/fedbiomed/fedbiomed">Code</a><span class="gh-meta" data-repo="fedbiomed/fedbiomed"></span></div>
+      </article>
+
+      <article class="card reveal" data-cat="fl">
+        <img class="thumb contain" src="../assets/img/federated-kmeans.jpg" alt="Datasets split across four federated clients" loading="lazy">
+        <span class="domain">Federated Learning</span>
+        <h3>Unsupervised federated algorithms</h3>
+        <p>Federated k-means and fuzzy k-means compared with local k-means, incremental PCA, association rules and affinity propagation, with a study of data heterogeneity.</p>
+        <div class="tags"><span class="tag">scikit-learn</span><span class="tag">NumPy</span><span class="tag">Jupyter</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/federated-k-means">Code</a><span class="gh-meta" data-repo="ybouilla/federated-k-means"></span></div>
+      </article>
+
+      <article class="card reveal" data-cat="fl">
+        <img class="thumb" src="../assets/img/dataset-api.svg" alt="Diagram of the Dataset API linking data sources to ML frameworks" loading="lazy">
+        <span class="domain">Software architecture</span>
+        <h3>Dataset API redesign</h3>
+        <p>Architecture proposal for a unified data API in Fed-BioMed: extensibility (BIDS), independence from ML frameworks, groundwork for federated analytics.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Design patterns</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/dataset_design">Code</a><span class="gh-meta" data-repo="ybouilla/dataset_design"></span></div>
+      </article>
+
+      <article class="card reveal" data-cat="data">
+        <img class="thumb" src="../assets/img/pipeline.svg" alt="Diagram of a multi-stage data pipeline" loading="lazy">
+        <span class="domain">Data engineering</span>
+        <h3>Incremental data pipeline</h3>
+        <p>Simulation of a full data lifecycle: synthetic data generation, validation, Python + SQL transformation, SQLite storage, incremental processing and a test suite.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">SQLite</span><span class="tag">Docker</span><span class="tag">pytest</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/incremental_pipeline">Code</a><span class="gh-meta" data-repo="ybouilla/incremental_pipeline"></span></div>
+      </article>
+
+      <article class="card reveal" data-cat="web data">
+        <img class="thumb" src="../assets/img/movie-explorer.jpg" alt="Screenshot of the movie explorer interface" loading="lazy" style="object-position:top">
+        <span class="domain">Data visualization</span>
+        <h3>Movie database explorer</h3>
+        <p>Hi! PARIS challenge: a web platform to explore a movie database. Containerized deployment with an application server and a reverse proxy.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">Gunicorn</span><span class="tag">Nginx</span><span class="tag">Docker</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/hiparis_project">Code</a><span class="gh-meta" data-repo="ybouilla/hiparis_project"></span></div>
+      </article>
+
+      <article class="card reveal" data-cat="sante web">
+        <img class="thumb" src="../assets/img/ecg.jpg" style="object-position:top" alt="Screenshot of the ECG analysis app" loading="lazy">
+        <span class="domain">Health &amp; web</span>
+        <h3>Heart monitoring (ECG)</h3>
+        <p>Web application to upload an ECG recording and compute heart rate. React front-end, Flask API, back-end tests.</p>
+        <div class="tags"><span class="tag">React</span><span class="tag">Flask</span><span class="tag">pytest</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/project_rxa1">Code</a><span class="gh-meta" data-repo="ybouilla/project_rxa1"></span></div>
+      </article>
+
+      <article class="card reveal" data-cat="sante">
+        <img class="thumb" src="../assets/img/segmentation.jpg" alt="Aneurysm segmentation with Graph Cut" loading="lazy" style="object-position:right center">
+        <span class="domain">Medical imaging</span>
+        <h3>Computer vision</h3>
+        <p>Filtering, semi-automatic aneurysm segmentation (Graph Cut, SLIC), deep learning (YOLO) and evaluation metrics (Dice, IoU, Hausdorff).</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Jupyter</span><span class="tag">YOLO</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/computervision">Code</a><span class="gh-meta" data-repo="ybouilla/computervision"></span></div>
+      </article>
+
+      <article class="card reveal" data-cat="sante">
+        <img class="thumb" src="../assets/img/plethysmographie.svg" alt="Thoracic and abdominal breathing signals with phase loop" loading="lazy">
+        <span class="domain">Physiological signals</span>
+        <h3>Respiratory plethysmography</h3>
+        <p>Calibration of plethysmography belts with multiple linear regression to estimate tidal volume, and phase angle computation (Konno &amp; Mead).</p>
+        <div class="tags"><span class="tag">MATLAB</span><span class="tag">Excel VBA</span><span class="tag">Signal processing</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/bandes_plethysmographies">Code</a><span class="gh-meta" data-repo="ybouilla/bandes_plethysmographies"></span></div>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">© Yannick Bouillard · <a href="https://github.com/ybouilla">GitHub</a> · <a href="https://www.linkedin.com/in/yannick-bouillard-9b1732158/">LinkedIn</a></div>
+  </footer>
+  <script src="../assets/bg.js"></script>
+  <script src="../assets/site.js"></script>
+</body>
+</html>
