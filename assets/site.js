@@ -2,7 +2,7 @@
   const lang = document.documentElement.lang === "en" ? "en" : "fr";
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Apparition des blocs au défilement
+  // Reveal blocks on scroll
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); }
@@ -10,7 +10,7 @@
   }, { threshold: 0.12 });
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
-  // Rotation des intitulés de poste dans le bandeau
+  // Rotate job titles in the banner
   const roleEl = document.querySelector("[data-roles]");
   if (roleEl && !reduceMotion) {
     const roles = JSON.parse(roleEl.dataset.roles);
@@ -25,7 +25,7 @@
     }, 2600);
   }
 
-  // Compteurs animés
+  // Animated counters
   const counters = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
@@ -43,7 +43,7 @@
   });
   document.querySelectorAll("[data-count]").forEach((el) => counters.observe(el));
 
-  // Filtres de la page Projets
+  // Filters on the Projects page
   const buttons = document.querySelectorAll(".filters button");
   const cards = document.querySelectorAll("#projects .card");
   buttons.forEach((btn) => btn.addEventListener("click", () => {
@@ -52,7 +52,7 @@
     cards.forEach((c) => { c.hidden = f !== "all" && !c.dataset.cat.split(" ").includes(f); });
   }));
 
-  // Données GitHub en direct : étoiles et date de dernière mise à jour de chaque dépôt
+  // Live GitHub data: stars and last update date of each repository
   const metas = document.querySelectorAll(".gh-meta[data-repo]");
   if (metas.length) {
     const fmt = new Intl.DateTimeFormat(lang === "en" ? "en-GB" : "fr-FR", { month: "short", year: "numeric" });

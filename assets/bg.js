@@ -1,6 +1,6 @@
-// Fonds animés « IA × biomédical », dessinés sur <canvas>.
-// Pour changer le fond de tout le site, modifie DEFAULT_BG : "neural", "dna" ou "monitor".
-// Pour prévisualiser un fond sans rien modifier : ajoute ?bg=dna à l'adresse de la page.
+// Animated "AI × biomedical" backgrounds, drawn on <canvas>.
+// To change the background of the whole site, edit DEFAULT_BG: "neural", "dna" or "monitor".
+// To preview a background without editing anything, add ?bg=dna to the page URL.
 (function () {
   const DEFAULT_BG = "neural";
 
@@ -10,7 +10,7 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const gauss = (x, m, s) => Math.exp(-((x - m) ** 2) / (2 * s * s));
-  // Battement cardiaque stylisé (onde P, complexe QRS, onde T) sur une période [0, 1)
+  // Stylized heartbeat (P wave, QRS complex, T wave) over one period [0, 1)
   const ecg = (p) =>
     0.12 * gauss(p, 0.14, 0.025) - 0.12 * gauss(p, 0.245, 0.008) + gauss(p, 0.27, 0.01)
     - 0.25 * gauss(p, 0.295, 0.01) + 0.25 * gauss(p, 0.48, 0.04);
@@ -28,8 +28,8 @@
     ctx.stroke();
   }
 
-  // ---------- Vitrine : une animation différente toutes les SHOWCASE_PERIOD secondes ----------
-  const SHOWCASE_PERIOD = 3;
+  // ---------- Showcase: a different animation every SHOWCASE_PERIOD seconds ----------
+  const SHOWCASE_PERIOD = 30;
   const MONO = "13px ui-monospace, SFMono-Regular, Consolas, monospace";
 
   const SNIPPETS = [
@@ -38,11 +38,12 @@
       "ranked = reranker.rank(query, docs)[:5]",
       "answer = llm.generate(build_prompt(ranked))",
       "result = Answer.model_validate_json(answer)",
+      ""
     ],
     [
       "from fedbiomed import Experiment",
       "exp = Experiment(model=UNet3D(),",
-      "    nodes=[\"hopital_fr\", \"hopital_de\"])",
+      "    nodes=[\"hospital_fr\", \"hospital_de\"])",
       "exp.run(rounds=50)",
     ],
     [
@@ -54,7 +55,7 @@
   ];
   const KEYWORDS = /^(from|import|for|in|def|return|assert|range)$/;
 
-  // Générateur pseudo-aléatoire reproductible, pour que chaque graphe reste stable pendant son cycle
+  // Seeded pseudo-random generator, so each graph stays stable during its cycle
   function rng(seed) {
     return () => {
       seed = (seed + 0x6d2b79f5) | 0;
@@ -116,7 +117,7 @@
         .filter((o) => o.j > i).sort((u, v) => u.d - v.d).slice(0, 2)
         .forEach((o) => edges.push([i, o.j]));
     });
-    // Construction pendant la première moitié du cycle, déconstruction pendant la seconde
+    // Build during the first half of the cycle, take apart during the second half
     const k = p < 0.55 ? p / 0.55 : 1 - (p - 0.55) / 0.45;
     ctx.lineWidth = 1.5;
     edges.forEach(([i, j], e) => {
@@ -175,26 +176,50 @@
     ctx.shadowBlur = 0;
   }
 
-  const SHOWCASE = [
-    (ctx, r, p, c) => drawCode(ctx, r, p, c),
-    (ctx, r, p, c, t) => drawGraph(ctx, r, p, c, t),
-    (ctx, r, p, c) => drawChart(ctx, r, p, c),
-    (ctx, r, p, c, t) => drawEcg(ctx, r, t),
-  ];
+  // Reuse the full-size DNA and monitor scenes, clipped to the showcase area
+  const NO_MOUSE = { x: -9999, y: -9999 };
+  let dnaState = null;
+  function drawScene(ctx, r, t, kind) {
+    ctx.save();
+    ctx.beginPath(); ctx.roundRect(r.x, r.y, r.w, r.h, 12); ctx.clip();
+    ctx.translate(r.x, r.y);
+    if (kind === "dna" && (!dnaState || dnaState.w !== r.w || dnaState.h !== r.h)) {
+      dnaState = { w: r.w, h: r.h, s: scenes.dna.init(r.w, r.h) };
+    }
+    scenes[kind].draw(ctx, r.w, r.h, t, kind === "dna" ? dnaState.s : {}, NO_MOUSE);
+    ctx.restore();
+    if (kind === "monitor") {
+      ctx.strokeStyle = "rgba(148,163,184,0.25)"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.roundRect(r.x, r.y, r.w, r.h, 12); ctx.stroke();
+    }
+  }
+
+  // Animations shown in turn; remove a line to drop one, reorder lines to change the order
+  const SHOWCASE = {
+    code: (ctx, r, p, c) => drawCode(ctx, r, p, c),
+    dna: (ctx, r, p, c, t) => drawScene(ctx, r, t, "dna"),
+    graph: (ctx, r, p, c, t) => drawGraph(ctx, r, p, c, t),
+    ecg: (ctx, r, p, c, t) => drawEcg(ctx, r, t),
+    chart: (ctx, r, p, c) => drawChart(ctx, r, p, c),
+    monitor: (ctx, r, p, c, t) => drawScene(ctx, r, t, "monitor"),
+  };
+  // Add ?showcase=monitor (or code, dna, graph, ecg, chart) to the URL to pin a single animation
+  const pinned = SHOWCASE[new URLSearchParams(location.search).get("showcase")];
+  const ORDER = pinned ? [pinned] : Object.values(SHOWCASE);
 
   function showcase(ctx, w, h, t) {
     const r = region(w, h);
     const cycle = Math.floor(t / SHOWCASE_PERIOD);
     const p = frac(t / SHOWCASE_PERIOD);
-    const fade = Math.max(0, Math.min(1, p / 0.12, (1 - p) / 0.12));
+    const fade = pinned ? 1 : Math.max(0, Math.min(1, p / 0.12, (1 - p) / 0.12));
     ctx.save();
     ctx.globalAlpha = fade * r.alpha;
-    SHOWCASE[cycle % SHOWCASE.length](ctx, r, p, Math.floor(cycle / SHOWCASE.length), t);
+    ORDER[cycle % ORDER.length](ctx, r, pinned ? 0.6 : p, Math.floor(cycle / ORDER.length), t);
     ctx.restore();
   }
 
   const scenes = {
-    // Réseau de neurones en mouvement, relié à la souris, avec une vitrine animée qui change toutes les 3 s
+    // Moving neural network linked to the mouse, with a showcase animation that changes every 3 s
     neural: {
       init(w, h) {
         const n = Math.max(28, Math.min(110, Math.round((w * h) / 9000)));
@@ -239,7 +264,7 @@
         if (h >= 360) {
           showcase(ctx, w, h, t);
         } else {
-          // Bandeaux bas des pages secondaires : simple tracé ECG
+          // Short banners on secondary pages: plain ECG trace
           ctx.lineWidth = 2;
           ctx.shadowColor = `rgba(${TEAL},0.9)`; ctx.shadowBlur = 10;
           trace(ctx, w, h * 0.82, Math.min(70, h * 0.12), ecg, 280, t * 110, `rgba(${TEAL},0.75)`, 0, w);
@@ -248,7 +273,7 @@
       },
     },
 
-    // Double hélice d'ADN qui tourne, inclinée, au milieu de particules
+    // Rotating, tilted DNA double helix among floating particles
     dna: {
       init(w, h) {
         return {
@@ -288,7 +313,7 @@
       },
     },
 
-    // Moniteur de réanimation : grille et trois signaux physiologiques balayés (ECG, respiration, SpO2)
+    // ICU monitor: grid and three swept physiological signals (ECG, respiration, SpO2)
     monitor: {
       init() { return {}; },
       draw(ctx, w, h, t) {
