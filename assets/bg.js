@@ -48,10 +48,36 @@
     ],
     [
       "for epoch in range(100):",
-      "    loss = criterion(model(x), y)",
-      "    loss.backward()",
-      "    optimizer.step()",
+      "    for x, y in batches:"
+      "        optimizer.zero_grad()"
+      "        loss = criterion(model(x), y)",
+      "        loss.backward()",
+      "        optimizer.step()",
     ],
+    [
+      "@SpringBootApplication"
+      "public class DemoApplication {"
+
+      "    public static void main(String[] args) {"
+      "        SpringApplication.run(DemoApplication.class, args);"
+    "       }"
+    "   }"
+    ],
+    [ 
+      "import { useState } from \"react\";",
+      "",
+      "function Counter() {",
+      "  const [count, setCount] = useState(0);",
+      "",
+      "  return (",
+      "    <div>",
+      "      <h2>Count: {count}</h2>",
+      "      <Component onClick={() => setCount(count + 1)}>",
+      "      </Component>",
+      "    </div>",
+      "  );",
+      "}",
+    ]
   ];
   const KEYWORDS = /^(from|import|for|in|def|return|assert|range)$/;
 
