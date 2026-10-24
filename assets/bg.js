@@ -48,20 +48,19 @@
     ],
     [
       "for epoch in range(100):",
-      "    for x, y in batches:"
-      "        optimizer.zero_grad()"
+      "    for x, y in batches:",
+      "        optimizer.zero_grad()",
       "        loss = criterion(model(x), y)",
       "        loss.backward()",
       "        optimizer.step()",
     ],
     [
-      "@SpringBootApplication"
-      "public class DemoApplication {"
-
-      "    public static void main(String[] args) {"
-      "        SpringApplication.run(DemoApplication.class, args);"
-    "       }"
-    "   }"
+      "@SpringBootApplication",
+      "public class DemoApplication {",
+      "    public static void main(String[] args) {",
+      "        SpringApplication.run(DemoApplication.class, args);",
+      "    }",
+      "}",
     ],
     [ 
       "import { useState } from \"react\";",
@@ -79,7 +78,8 @@
       "}",
     ]
   ];
-  const KEYWORDS = /^(from|import|for|in|def|return|assert|range)$/;
+  // Highlighted keywords (Python, Java, JavaScript)
+  const KEYWORDS = /^(from|import|for|in|def|return|assert|range|public|class|static|void|const|function|new)$/;
 
   // Seeded pseudo-random generator, so each graph stays stable during its cycle
   function rng(seed) {
@@ -102,22 +102,30 @@
     const lines = SNIPPETS[cycle % SNIPPETS.length];
     const total = lines.reduce((n, l) => n + l.length, 0);
     let left = Math.floor(Math.min(1, p / 0.7) * total);
-    const lh = 22, top = r.y + r.h / 2 - (lines.length * lh) / 2 - 20;
+    // How many characters of each line are typed so far, and which line is being typed
+    const typed = lines.map((line) => { const n = Math.max(0, Math.min(line.length, left)); left -= line.length; return n; });
+    let current = typed.findIndex((n, i) => n < lines[i].length);
+    if (current < 0) current = lines.length - 1;
+    // Long snippets scroll like an editor: only the lines that fit are shown, following the typed line
+    const lh = 22;
+    const visible = Math.max(1, Math.min(lines.length, Math.floor((r.h - 44) / lh)));
+    const first = Math.max(0, Math.min(current - visible + 1, lines.length - visible));
+    const top = r.y + r.h / 2 - (visible * lh) / 2 - 20;
     const panelW = Math.min(r.w, 470);
     ctx.fillStyle = "rgba(15,23,42,0.72)";
     ctx.strokeStyle = "rgba(148,163,184,0.25)";
-    ctx.beginPath(); ctx.roundRect(r.x, top, panelW, lines.length * lh + 44, 10); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(r.x, top, panelW, visible * lh + 44, 10); ctx.fill(); ctx.stroke();
     ["#f87171", "#fbbf24", "#34d399"].forEach((c, i) => {
       ctx.fillStyle = c; ctx.beginPath(); ctx.arc(r.x + 16 + i * 14, top + 14, 4, 0, 6.28); ctx.fill();
     });
     ctx.font = MONO;
     let caret = null;
-    lines.forEach((line, i) => {
-      const y = top + 42 + i * lh;
+    lines.slice(first, first + visible).forEach((line, k) => {
+      const i = first + k;
+      const y = top + 42 + k * lh;
       ctx.fillStyle = "rgba(100,116,139,0.8)";
       ctx.fillText(String(i + 1), r.x + 12, y);
-      const shown = line.slice(0, Math.max(0, left));
-      left -= line.length;
+      const shown = line.slice(0, typed[i]);
       let x = r.x + 34;
       for (const tok of shown.split(/(\s+|[()[\],.=:]|"[^"]*"?)/)) {
         if (!tok) continue;
@@ -125,8 +133,7 @@
         ctx.fillText(tok, x, y);
         x += ctx.measureText(tok).width;
       }
-      if (shown.length < line.length && !caret) caret = { x, y };
-      if (i === lines.length - 1 && !caret) caret = { x, y };
+      if (i === current) caret = { x, y };
     });
     if (caret && Math.floor(p * 12) % 2 === 0) {
       ctx.fillStyle = "#22d3ee"; ctx.fillRect(caret.x + 1, caret.y - 11, 7, 14);
