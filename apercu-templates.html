@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aperçu des fonds · Yannick Bouillard</title>
+  <meta name="robots" content="noindex">
+  <script>document.documentElement.classList.add("js")</script>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">Yannick <span>Bouillard</span></a>
+      <nav>
+        <a href="index.html">Retour au site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h2>Choisir le fond animé</h2>
+    <p class="muted">Trois propositions IA × biomédical, dessinées en code (aucune image externe, aucun droit d'auteur).
+      Passe la souris dessus : les fonds réagissent au curseur. Pour choisir, modifie <code>DEFAULT_BG</code> en haut de
+      <code>assets/bg.js</code>. Cette page n'est pas liée depuis le site : tu peux la supprimer avant publication.</p>
+
+    <div class="grid" style="margin-top:24px">
+      <div class="preview">
+        <div class="frame"><canvas class="hero-bg" data-bg="neural" aria-hidden="true"></canvas></div>
+        <div class="body">
+          <h3>1. Réseau neuronal + ECG</h3>
+          <p>Neurones connectés qui suivent le curseur, avec un tracé ECG en bas. Évoque directement « IA appliquée à la santé ».</p>
+          <a href="index.html?bg=neural">Voir en plein écran →</a>
+        </div>
+      </div>
+      <div class="preview">
+        <div class="frame"><canvas class="hero-bg" data-bg="dna" aria-hidden="true"></canvas></div>
+        <div class="body">
+          <h3>2. Double hélice d'ADN</h3>
+          <p>Hélice en rotation qui s'élargit près du curseur. Plus « sciences de la vie », très lisible et élégant.</p>
+          <a href="index.html?bg=dna">Voir en plein écran →</a>
+        </div>
+      </div>
+      <div class="preview">
+        <div class="frame"><canvas class="hero-bg" data-bg="monitor" aria-hidden="true"></canvas></div>
+        <div class="body">
+          <h3>3. Moniteur de réanimation</h3>
+          <p>Grille et signaux physiologiques balayés (ECG, respiration, SpO₂). Rappelle ton travail sur les signaux et la ventilation.</p>
+          <a href="index.html?bg=monitor">Voir en plein écran →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/bg.js"></script>
+</body>
+</html>

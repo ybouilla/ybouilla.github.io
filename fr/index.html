@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yannick Bouillard</title>
+  <meta name="description" content="Yannick Bouillard, Data Scientist et ingénieur IA : Machine Learning, Deep Learning, IA générative et données de santé.">
+  <link rel="alternate" hreflang="en" href="../en/index.html">
+  <script>document.documentElement.classList.add("js")</script>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">Yannick <span>Bouillard</span></a>
+      <nav>
+        <a href="index.html" aria-current="page">Accueil</a>
+        <a href="projects.html">Projets</a>
+        <a href="background.html">Parcours</a>
+        <a class="lang" href="../en/index.html" hreflang="en" lang="en" title="English version">EN</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <canvas class="hero-bg" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+      <div class="monogram" aria-hidden="true">YB</div>
+      <p class="eyebrow">IA × Biomédical</p>
+      <h1>Yannick Bouillard</h1>
+      <p class="role"><span data-roles='["Data Scientist","Ingénieur IA","Ingénieur Machine Learning","Spécialiste des données de santé"]'>Data Scientist</span></p>
+      <p class="lead">6 ans d'expérience en Machine Learning, Deep Learning et IA générative dans un institut de recherche (Inria),
+        du prototypage à la mise en production, avec une spécialisation dans les données de santé.</p>
+      <div class="actions">
+        <a class="btn primary" href="projects.html">Voir mes projets</a>
+        <a class="btn" href="https://github.com/ybouilla">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/yannick-bouillard-9b1732158/">LinkedIn</a>
+        <a class="btn" href="mailto:yannickbouillard2@gmail.com">Me contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="stats">
+      <div class="stat reveal"><strong data-count="6">6</strong><span>années d'expériences</span></div>
+      <div class="stat reveal"><strong data-count="2">2</strong><span>publications scientifiques</span></div>
+      <div class="stat reveal"><strong data-count="2">2</strong><span>projets de déploiement d'applications</span></div>
+      <div class="stat reveal"><strong data-count="8">8</strong><span>projets publics</span></div>
+    </div>
+
+    <h2 class="reveal">Ce que je fais</h2>
+    <div class="grid">
+      <div class="card reveal">
+        <span class="icon" aria-hidden="true">🧠</span>
+        <h3>Machine Learning &amp; Deep Learning</h3>
+        <p>Federated Learning, segmentation d'imagerie médicale (3D U-Net), séries temporelles et traitement du signal.</p>
+      </div>
+      <div class="card reveal">
+        <span class="icon" aria-hidden="true">✨</span>
+        <h3>IA générative</h3>
+        <p>Systèmes RAG et agents (LangChain, LangGraph) pour explorer des documents médicaux et des protocoles.</p>
+      </div>
+      <div class="card reveal">
+        <span class="icon" aria-hidden="true">⚙️</span>
+        <h3>Ingénierie logicielle &amp; MLOps</h3>
+        <p>Python, APIs (Flask, FastAPI), React, Docker, CI/CD, tests, suivi des modèles (MLflow).</p>
+      </div>
+      <div class="card reveal">
+        <span class="icon" aria-hidden="true">🩺</span>
+        <h3>Données de santé</h3>
+        <p>Pipelines PACS / DICOM, anonymisation, conformité RGPD, déploiement en réseaux hospitaliers.</p>
+      </div>
+    </div>
+
+    <h2 class="reveal">Projets principaux</h2>
+    <div class="grid">
+      <article class="card reveal">
+        <img class="thumb logo" src="../assets/img/fedbiomed.png" alt="Logo de Fed-BioMed" loading="lazy">
+        <span class="domain">Federated Learning</span>
+        <h3>Fed-BioMed</h3>
+        <p>Plateforme open source d'apprentissage fédéré pour la santé, déployée dans plusieurs réseaux hospitaliers. 5 ans de contribution à Inria.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">gRPC</span><span class="tag">Docker</span></div>
+        <div class="links"><a href="https://github.com/fedbiomed/fedbiomed">Code</a><span class="gh-meta" data-repo="fedbiomed/fedbiomed"></span></div>
+      </article>
+      <article class="card reveal">
+        <img class="thumb" src="../assets/img/pipeline.svg" alt="Schéma d'un pipeline de données en plusieurs étapes" loading="lazy">
+        <span class="domain">Data engineering</span>
+        <h3>Pipeline de données incrémental</h3>
+        <p>Cycle de vie complet : génération, validation, transformation Python + SQL, stockage, traitement incrémental, tests.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Docker</span><span class="tag">pytest</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/incremental_pipeline">Code</a><span class="gh-meta" data-repo="ybouilla/incremental_pipeline"></span></div>
+      </article>
+      <article class="card reveal">
+        <img class="thumb" src="../assets/img/segmentation.jpg" alt="Segmentation d'anévrismes par Graph Cut" loading="lazy" style="object-position:right center">
+        <span class="domain">Imagerie médicale</span>
+        <h3>Vision par ordinateur</h3>
+        <p>Filtrage, segmentation d'anévrismes (Graph Cut, SLIC), YOLO et évaluation (Dice, IoU, Hausdorff).</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Jupyter</span><span class="tag">YOLO</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/computervision">Code</a><span class="gh-meta" data-repo="ybouilla/computervision"></span></div>
+      </article>
+    </div>
+    <p class="reveal"><a href="projects.html">Tous les projets →</a></p>
+  </main>
+
+  <footer>
+    <div class="wrap">© Yannick Bouillard · <a href="https://github.com/ybouilla">GitHub</a> · <a href="https://www.linkedin.com/in/yannick-bouillard-9b1732158/">LinkedIn</a></div>
+  </footer>
+  <script src="../assets/bg.js"></script>
+  <script src="../assets/site.js"></script>
+</body>
+</html>
