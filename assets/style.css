@@ -164,6 +164,22 @@ h3 { font-size: 17px; margin: 0 0 4px; }
 .pub { padding: 14px 0; border-bottom: 1px solid var(--border); }
 .pub:last-child { border-bottom: 0; }
 
+/* Services page: numbered steps and a dark call-to-action panel */
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.steps li { counter-increment: step; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; }
+.steps li::before {
+  content: counter(step); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; margin-bottom: 10px;
+  font-weight: 700; color: #fff; background: linear-gradient(135deg, var(--cyan), var(--violet));
+}
+.steps h3 { font-size: 16px; }
+.steps p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.cta {
+  margin-top: 56px; padding: 32px 28px; border-radius: 16px; color: var(--hero-text);
+  background: radial-gradient(ellipse at 70% 20%, #12224a 0%, var(--hero-bg) 70%);
+}
+.cta h2 { margin: 0 0 8px; color: #f8fafc; }
+.cta p { margin: 0; color: var(--hero-muted); max-width: 620px; }
+
 footer { margin-top: 72px; padding: 24px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
 
 /* Reveal on scroll (only when JavaScript is enabled) */
