@@ -36,11 +36,21 @@
       <button type="button" data-filter="all" aria-pressed="true">All</button>
       <button type="button" data-filter="fl" aria-pressed="false">Federated Learning</button>
       <button type="button" data-filter="data" aria-pressed="false">Data engineering</button>
+      <button type="button" data-filter="vision" aria-pressed="false">Computer vision</button>
       <button type="button" data-filter="sante" aria-pressed="false">Health &amp; signal</button>
       <button type="button" data-filter="web" aria-pressed="false">Web</button>
     </div>
 
     <div class="grid" id="projects">
+      <article class="card reveal" data-cat="vision">
+        <img class="thumb" src="../assets/img/tracking.jpg" alt="CARLA camera view with LiDAR points and detected 3D boxes" loading="lazy">
+        <span class="domain">Autonomous driving</span>
+        <h3>3D detection &amp; vehicle tracking</h3>
+        <p>LiDAR + semantic camera in CARLA: PointPainting + PointPillars (CenterPoint head) vs a DBSCAN baseline, Kalman multi-object tracking and trajectory prediction up to 0.25 s. Detection F1 6× the baseline, prediction error −41% vs a constant-position model.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">CARLA</span><span class="tag">PointPillars</span><span class="tag">Kalman filter</span><span class="tag">DBSCAN</span></div>
+        <div class="links"><a href="https://github.com/ybouilla/tracking">Code</a><span class="gh-meta" data-repo="ybouilla/tracking"></span></div>
+      </article>
+
       <article class="card reveal" data-cat="fl">
         <img class="thumb logo" src="../assets/img/fedbiomed.png" alt="Fed-BioMed logo" loading="lazy">
         <span class="domain">Federated Learning</span>
@@ -95,7 +105,7 @@
         <div class="links"><a href="https://github.com/ybouilla/project_rxa1">Code</a><span class="gh-meta" data-repo="ybouilla/project_rxa1"></span></div>
       </article>
 
-      <article class="card reveal" data-cat="sante">
+      <article class="card reveal" data-cat="sante vision">
         <img class="thumb" src="../assets/img/segmentation.jpg" alt="Aneurysm segmentation with Graph Cut" loading="lazy" style="object-position:right center">
         <span class="domain">Medical imaging</span>
         <h3>Computer vision</h3>
