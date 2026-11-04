@@ -1,9 +1,17 @@
-// Short opening animation, played once per browser session on the first page opened.
+// Opening animation of the home pages, played once per browser session: the animation runs,
+// fades out while the profile appears under the name, then the name moves onto the page title
+// while the rest of the page fades in.
 // To change it, edit INTRO_STYLE: "signal" (heartbeat line) or "graph" (network of nodes).
 // To preview it again without editing anything, add ?intro=signal or ?intro=graph to the page URL.
 (function () {
-  const INTRO_STYLE = "signal";
-  const DURATION = 1800;
+  const INTRO_STYLE = "graph";
+  const DURATION = 5000;      // animation, in milliseconds
+  const PROFILE_TIME = 2800;  // how long the profile stays on screen, including its fade-in
+  const FLIGHT = 1000;        // move of the name onto the page title (same value as in style.css)
+  const PROFILE = {
+    en: "Data Scientist · AI Engineer<small>Machine Learning and generative AI for healthcare data</small>",
+    fr: "Data Scientist · Ingénieur IA<small>Machine Learning et IA générative pour les données de santé</small>",
+  };
 
   const forced = new URLSearchParams(location.search).get("intro");
   const style = forced === "graph" || forced === "signal" ? forced : INTRO_STYLE;
@@ -26,7 +34,9 @@
   const overlay = document.createElement("div");
   overlay.className = "intro";
   overlay.setAttribute("aria-hidden", "true");
-  overlay.innerHTML = '<canvas></canvas><p class="intro-name">Yannick <span>Bouillard</span></p>';
+  const lang = document.documentElement.lang === "en" ? "en" : "fr";
+  overlay.innerHTML = '<canvas></canvas><div class="intro-text"><p class="intro-name">Yannick <span>Bouillard</span></p>'
+    + `<p class="intro-profile">${PROFILE[lang]}</p></div>`;
   // The body does not exist yet: this script runs in the <head>, so nothing shows before the overlay
   document.documentElement.appendChild(overlay);
 
@@ -91,8 +101,32 @@
   function close() {
     if (closed) return;
     closed = true;
-    overlay.classList.add("done");
-    setTimeout(() => overlay.remove(), 500);
+    const title = document.querySelector(".hero h1");
+    const range = document.createRange();
+    if (title) range.selectNodeContents(title);
+    // No title to land on, or a title on several lines: a plain fade
+    if (!title || range.getClientRects().length !== 1) {
+      overlay.classList.add("done");
+      setTimeout(() => overlay.remove(), 800);
+      return;
+    }
+    // Freeze the text where it is, in case the visitor skips while it is still moving
+    const text = overlay.querySelector(".intro-text");
+    const name = overlay.querySelector(".intro-name");
+    text.style.transform = getComputedStyle(text).transform;
+    text.style.transition = "none";
+    name.style.animation = "none";
+    const from = name.getBoundingClientRect();
+    const to = range.getBoundingClientRect();
+    const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+    const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+    title.style.visibility = "hidden";
+    overlay.classList.add("landing");
+    name.style.transform = `translate(${dx}px, ${dy}px) scale(${to.width / from.width})`;
+    setTimeout(() => {
+      title.style.visibility = "";
+      overlay.remove();
+    }, FLIGHT);
   }
 
   let t0 = null;
@@ -103,12 +137,15 @@
     ctx.clearRect(0, 0, w, h);
     (style === "graph" ? drawGraph : drawSignal)(k);
     if (k < 1) requestAnimationFrame(frame);
-    else setTimeout(close, 200);
+    else {
+      overlay.classList.add("profile");
+      setTimeout(close, PROFILE_TIME);
+    }
   }
   requestAnimationFrame(frame);
 
   // Visitors can skip it, and it can never stay on screen if animation frames are paused
   overlay.addEventListener("click", close);
   window.addEventListener("keydown", close, { once: true });
-  setTimeout(close, DURATION + 1500);
+  setTimeout(close, DURATION + PROFILE_TIME + 1500);
 })();
