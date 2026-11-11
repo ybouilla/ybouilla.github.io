@@ -1,20 +1,108 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <!-- Incremental pipeline, animated: each 4 s a batch of data goes through generation, validation,
+       transformation and aggregation into the database, and the watermark at the bottom moves one step.
+       The animation is pure CSS, so it also plays when the SVG is shown with an <img> tag. -->
+  <style>
+    .packet { opacity: 0; animation: travel 4s linear infinite; }
+    .s1 { animation-delay: 0s; } .s2 { animation-delay: .8s; } .s3 { animation-delay: 1.6s; } .s4 { animation-delay: 2.4s; }
+    @keyframes travel {
+      0% { opacity: 1; transform: translateX(0); }
+      18% { opacity: 1; transform: translateX(14px); }
+      20%, 100% { opacity: 0; transform: translateX(14px); }
+    }
+
+    /* A stage lights up when the batch reaches it */
+    .stage { fill-opacity: 0; animation: glow 4s ease-out infinite; }
+    .b1 { animation-delay: 0s; } .b2 { animation-delay: .8s; } .b3 { animation-delay: 1.6s; } .b4 { animation-delay: 2.4s; } .b5 { animation-delay: 3.2s; }
+    @keyframes glow {
+      0% { fill-opacity: 0; }
+      5% { fill-opacity: .22; }
+      30%, 100% { fill-opacity: 0; }
+    }
+
+    /* Generation: the four dots appear one after the other */
+    .dot { animation: blink 4s ease-in-out infinite; }
+    .d2 { animation-delay: -3.85s; } .d3 { animation-delay: -3.7s; } .d4 { animation-delay: -3.55s; }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      85% { opacity: .25; }
+    }
+
+    /* Validation and transformation: the icons are drawn as the batch arrives */
+    .draw { stroke-dasharray: 50; animation: draw 4s ease-out infinite; }
+    .check { animation-delay: .8s; } .chart { animation-delay: 1.6s; }
+    @keyframes draw {
+      0% { stroke-dashoffset: 50; }
+      15%, 85% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 50; }
+    }
+
+    /* Aggregation: the slice turns a quarter, then slowly back */
+    .slice { transform-box: view-box; transform-origin: 234px 90px; animation: turn 4s ease-in-out infinite 2.4s; }
+    @keyframes turn {
+      0% { transform: rotate(0); }
+      15%, 80% { transform: rotate(90deg); }
+      100% { transform: rotate(0); }
+    }
+
+    /* Storage: the database fills a little more with each batch */
+    .level { transform-box: view-box; transform-origin: 294px 111px; animation: fill 20s step-end infinite -0.8s; }
+    @keyframes fill {
+      0% { transform: scaleY(.2); } 20% { transform: scaleY(.4); } 40% { transform: scaleY(.6); }
+      60% { transform: scaleY(.8); } 80%, 100% { transform: scaleY(1); }
+    }
+
+    /* Watermark: one step for each batch processed, then a new run starts */
+    .done { transform-box: view-box; transform-origin: 14px 140px; animation: grow 20s step-end infinite -0.8s; }
+    @keyframes grow {
+      0% { transform: scaleX(.2); } 20% { transform: scaleX(.4); } 40% { transform: scaleX(.6); }
+      60% { transform: scaleX(.8); } 80%, 100% { transform: scaleX(1); }
+    }
+    .marker { animation: move 20s step-end infinite -0.8s; }
+    @keyframes move {
+      0% { transform: translateX(59.6px); } 20% { transform: translateX(119.2px); } 40% { transform: translateX(178.8px); }
+      60% { transform: translateX(238.4px); } 80%, 100% { transform: translateX(298px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+      .done { transform: scaleX(.67); }
+      .marker { transform: translateX(200px); }
+      .level { transform: scaleY(.6); }
+    }
+  </style>
+  <defs>
+    <clipPath id="watermark"><rect class="done" x="14" y="130" width="298" height="20"/></clipPath>
+    <clipPath id="tank"><path d="M276 76v28c0 4 8 7 18 7s18-3 18-7V76z"/></clipPath>
+  </defs>
+
   <rect width="320" height="180" fill="#0b1224"/>
+  <rect class="level" x="276" y="76" width="36" height="35" fill="#2dd4bf" opacity=".25" clip-path="url(#tank)"/>
+  <g stroke-width="2">
+    <rect class="stage b1" x="14" y="68" width="44" height="44" rx="8" stroke="#22d3ee" fill="#22d3ee"/>
+    <rect class="stage b2" x="80" y="68" width="44" height="44" rx="8" stroke="#22d3ee" fill="#22d3ee"/>
+    <rect class="stage b3" x="146" y="68" width="44" height="44" rx="8" stroke="#a78bfa" fill="#a78bfa"/>
+    <rect class="stage b4" x="212" y="68" width="44" height="44" rx="8" stroke="#a78bfa" fill="#a78bfa"/>
+  </g>
   <g fill="none" stroke-width="2">
-    <rect x="14" y="68" width="44" height="44" rx="8" stroke="#22d3ee"/>
-    <rect x="80" y="68" width="44" height="44" rx="8" stroke="#22d3ee"/>
-    <rect x="146" y="68" width="44" height="44" rx="8" stroke="#a78bfa"/>
-    <rect x="212" y="68" width="44" height="44" rx="8" stroke="#a78bfa"/>
     <path d="M58 90h18m-5-5 5 5-5 5M124 90h18m-5-5 5 5-5 5M190 90h18m-5-5 5 5-5 5M256 90h14m-5-5 5 5-5 5" stroke="#64748b"/>
-    <path d="M276 76v28c0 4 8 7 18 7s18-3 18-7V76" stroke="#2dd4bf"/>
+    <path class="stage b5" d="M276 76v28c0 4 8 7 18 7s18-3 18-7V76" stroke="#2dd4bf" fill="#2dd4bf"/>
     <ellipse cx="294" cy="76" rx="18" ry="7" stroke="#2dd4bf"/>
     <path d="M276 90c0 4 8 7 18 7s18-3 18-7" stroke="#2dd4bf"/>
   </g>
-  <g fill="#22d3ee"><circle cx="28" cy="82" r="3"/><circle cx="44" cy="82" r="3"/><circle cx="28" cy="98" r="3"/><circle cx="44" cy="98" r="3"/></g>
-  <path d="M92 90l7 7 13-14" fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M156 100l8-14 8 8 8-16" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M234 78a12 12 0 1 0 12 12h-12z" fill="#a78bfa" opacity=".8"/>
+
+  <!-- Batches moving along the arrows -->
+  <rect class="packet s1" x="57" y="87" width="6" height="6" rx="1.5" fill="#22d3ee"/>
+  <rect class="packet s2" x="123" y="87" width="6" height="6" rx="1.5" fill="#22d3ee"/>
+  <rect class="packet s3" x="189" y="87" width="6" height="6" rx="1.5" fill="#a78bfa"/>
+  <rect class="packet s4" x="255" y="87" width="6" height="6" rx="1.5" fill="#a78bfa"/>
+
+  <g fill="#22d3ee"><circle class="dot" cx="28" cy="82" r="3"/><circle class="dot d2" cx="44" cy="82" r="3"/><circle class="dot d3" cx="28" cy="98" r="3"/><circle class="dot d4" cx="44" cy="98" r="3"/></g>
+  <path class="draw check" d="M92 90l7 7 13-14" fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="draw chart" d="M156 100l8-14 8 8 8-16" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="slice" d="M234 78a12 12 0 1 0 12 12h-12z" fill="#a78bfa" opacity=".8"/>
+
   <path d="M14 140h298" stroke="#1e293b" stroke-width="2"/>
-  <path d="M14 140h200" stroke="#22d3ee" stroke-width="2" stroke-dasharray="6 6"/>
-  <circle cx="214" cy="140" r="4" fill="#22d3ee"/>
+  <path d="M14 140h298" stroke="#22d3ee" stroke-width="2" stroke-dasharray="6 6" clip-path="url(#watermark)"/>
+  <circle class="marker" cx="14" cy="140" r="4" fill="#22d3ee"/>
 </svg>
